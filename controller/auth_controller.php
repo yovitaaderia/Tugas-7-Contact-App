@@ -30,6 +30,23 @@ class AuthController {
         }
     }
 
+    static function saveRegister() {
+        $post = array_map('htmlspecialchars', $_POST);
+
+        $user = User::register([
+            'name' => $post['name'], 
+            'email' => $post['email'], 
+            'password' => $post['password']
+        ]);
+
+        if ($user) {
+            header('Location: '.BASEURL.'login');
+        }
+        else {
+            header('Location: '.BASEURL.'register?failed=true');
+        }
+    }
+
     static function logout() {
         $_SESSION = array();
 

@@ -89,4 +89,15 @@ class ContactController {
             }
         }
     }
+
+    static function api() {
+        $url = 'https://api.coinlore.net/api/tickers/';
+        $json = file_get_contents($url);
+        $data = json_decode($json, true);
+        if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
+            echo "Error decoding JSON: " . json_last_error_msg();
+        } else {
+            var_dump($data['data'][0]['id']);
+        }
+    }
 }

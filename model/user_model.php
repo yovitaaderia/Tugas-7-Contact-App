@@ -25,7 +25,22 @@ class user {
         } else {
             return false; 
         }
-    }    
+    }  
+    
+    static function register($data=[]) {
+        extract($data);
+        global $conn;
+        
+        $inserted_at = date('Y-m-d H:i:s', strtotime('now'));
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO users SET name = ?, email = ?, password = ?, inserted_at = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ssss', $name, $email, $hashedPassword, $inserted_at);
+        $stmt->execute();
+
+        $result = $stmt->affected_rows > 0 ? true : false;
+        return $result;
+    }
 
     static function getPassword($email) { 
         global $conn;
